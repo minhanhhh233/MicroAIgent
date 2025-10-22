@@ -35,8 +35,25 @@ class Nodes:
         print("GENERATE USING LLM")
         question = state["question"]
         documents = state["documents"]
+        metrics_analysis = state["metrics_analysis"]
 
-        generation = automation.rag_chain.invoke({"context": documents, "question": question})
+        # Format documents as context
+        doc_context = "\n\n".join([
+            f"Document {i+1}:\n{doc.page_content if hasattr(doc, 'page_content') else doc}"
+            for i, doc in enumerate(documents)
+        ])
+        
+        # Add metrics analysis to context
+        if metrics_analysis:
+            combined_context = f"""{doc_context}
+            
+            --- METRICS ANALYSIS ---
+            {metrics_analysis}
+"""
+        else:
+            combined_context = doc_context
+
+        generation = automation.rag_chain.invoke({"context": combined_context, "question": question})
         return {"documents": documents, "question": question, "generation": generation}
 
     @staticmethod
