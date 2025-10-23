@@ -1,8 +1,6 @@
 from langchain_nvidia_ai_endpoints import NVIDIARerank
 import os
 from multiagent import RetrieverManager
-import io
-from contextlib import redirect_stdout, redirect_stderr
 from utils import automation
 from dotenv import load_dotenv
 load_dotenv()
@@ -51,22 +49,39 @@ class Nodes:
         question = state["question"]
         documents = state["documents"]
         metrics_analysis = state["metrics_analysis"]
+        correlated_findings = state["correlated_findings"]
 
         # Format documents as context
         doc_context = "\n\n".join([
             f"Document {i+1}:\n{doc.page_content if hasattr(doc, 'page_content') else doc}"
             for i, doc in enumerate(documents)
         ])
+
+        # Build combined context
+        combined_context = f"""
+        {'='*60}
+        LOG DOCUMENTS
+        {'='*60}
+        {doc_context}
+        """
         
-        # Add metrics analysis to context
+        # Add metrics analysis section
         if metrics_analysis:
-            combined_context = f"""{doc_context}
-            
-            --- METRICS ANALYSIS ---
+            combined_context += f"""
+            {'='*60}
+            METRICS ANALYSIS
+            {'='*60}
             {metrics_analysis}
-"""
-        else:
-            combined_context = doc_context
+            """
+        
+        # Add correlation analysis section - format dict as readable text
+        if correlated_findings:
+            combined_context += f"""
+            {'='*60}
+            CROSS-SERVICE CORRELATION
+            {'='*60}
+            {str(correlated_findings)}
+            """
 
         generation = automation.rag_chain.invoke({"context": combined_context, "question": question})
         return {"documents": documents, "question": question, "generation": generation}
