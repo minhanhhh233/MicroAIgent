@@ -1,6 +1,6 @@
 from langchain_nvidia_ai_endpoints import NVIDIARerank
 import os
-from multiagent import HybridRetriever
+from multiagent import RetrieverManager
 import io
 from contextlib import redirect_stdout, redirect_stderr
 from utils import automation
@@ -10,15 +10,30 @@ api_key = os.getenv('API_KEY')
 
 class Nodes:
     @staticmethod
-    def retrieve(state):    
-        print("---RETRIEVE---")
+    def retrieve(state):
+        """
+        Retrieve relevant documents from all services.
+        """
         question = state["question"]
-        path = state["path"]
-        hybrid_retriever_instance = HybridRetriever(path, api_key)
-        hybrid_retriever = hybrid_retriever_instance.get_retriever()
-        with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
-            documents = hybrid_retriever.get_relevant_documents(question)
-
+        print("---RETRIEVE---")
+        # Get the already-initialized retriever (no ingestion!)
+        retriever = RetrieverManager.get_retriever()        
+        # Retrieve documents (fast vector search)
+        documents = retriever.retrieve(question)
+        
+        # Print summary
+        print(f"  Retrieved: {len(documents)} documents")
+        
+        # Group by service
+        services = {}
+        for doc in documents:
+            service = doc.metadata.get('service', 'unknown')
+            services[service] = services.get(service, 0) + 1
+        
+        print("  By service:")
+        for service, count in services.items():
+            print(f"    • {service}: {count} chunks")
+        
         return {"documents": documents, "question": question}
 
     @staticmethod
