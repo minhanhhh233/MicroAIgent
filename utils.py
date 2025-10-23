@@ -7,6 +7,24 @@ from dotenv import load_dotenv
 load_dotenv()
 import json
 
+# Convert back to time strings (HH:MM:SS.ffffff)
+def microseconds_to_time_str(total_microseconds):
+    # Handle negative values (wrap to previous day)
+    if total_microseconds < 0:
+        total_microseconds += 24 * 3600 * 1000000
+    # Handle overflow (wrap to next day)
+    if total_microseconds >= 24 * 3600 * 1000000:
+        total_microseconds -= 24 * 3600 * 1000000
+    
+    hours = total_microseconds // 3600000000
+    remaining = total_microseconds % 3600000000
+    minutes = remaining // 60000000
+    remaining = remaining % 60000000
+    seconds = remaining // 1000000
+    microseconds = remaining % 1000000
+    
+    return f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}.{int(microseconds):06d}"
+
 class Nodeoutputs:
     def __init__(self, api_key, model, prompts_file):
         os.environ["NVIDIA_API_KEY"] = api_key
