@@ -6,6 +6,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import json
+import uuid
+
+def random_uuid():
+    return str(uuid.uuid4())
 
 # Convert back to time strings (HH:MM:SS.ffffff)
 def microseconds_to_time_str(total_microseconds):

@@ -508,8 +508,8 @@ if st.sidebar.button("🔄 Reset Conversation", use_container_width=True):
 # ============================================
 # Main UI Layout
 # ============================================
-st.title("🤖 RAG Agent with LangGraph & MCP")
-st.markdown("✨ Multi-node RAG pipeline with retrieval, grading, reranking, and generation")
+st.title("🤖 MicroAIgent")
+st.markdown("✨ AI-Powered Microservices Log Analysis")
 
 # Status indicator
 if st.session_state.session_initialized:
