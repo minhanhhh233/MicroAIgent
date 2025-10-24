@@ -2,6 +2,9 @@
 
 An AI-powered microservices log analysis system built upon NVIDIA's Multi-Agent Self-Corrective RAG framework. MicroAIgent extends the original [NVIDIA Log Analysis Multi-Agent RAG tutorial](https://github.com/NVIDIA/GenerativeAIExamples/tree/main/community/log_analysis_multi_agent_rag) to provide intelligent log analysis, and root-cause detection for microservices architectures.
 
+## 🎥 Demo
+[![Watch the demo](https://img.youtube.com/vi/buOPf8WkfL8/0.jpg)](https://www.youtube.com/watch?v=buOPf8WkfL8)
+
 ## 🎯 Overview
 
 MicroAIgent transforms overwhelming microservices logs into actionable insights using a multi-agent AI workflow. Instead of manually sifting through endless log files, developers and DevOps teams can ask natural language questions and receive intelligent, context-aware answers about system failures, performance issues, and anomalies.
