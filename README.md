@@ -108,4 +108,4 @@ For developers interested in understanding the MCP and LangGraph integration in 
 ## 📚 References
 
 - [Log Analysis Multi-Agent RAG tutorial](https://github.com/NVIDIA/GenerativeAIExamples/tree/main/community/log_analysis_multi_agent_rag)
-- [teddynote-lab](https://github.com/teddynote-lab)
+- [teddynote-lab](https://github.com/teddynote-lab/langgraph-mcp-agents)
